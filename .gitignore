@@ -141,3 +141,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# pi-debug-tool runtime output
+debug-exports/
+*.tsbuildinfo
+
+.pi/

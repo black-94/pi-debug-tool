@@ -1,0 +1,47 @@
+{
+  "name": "pi-debug-tool",
+  "version": "0.1.0",
+  "description": "Observer-only debug extension for Pi 0.99.x: slash commands to inspect state, trace runs, summarize metrics, and debug native MCP without ever touching model context.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "debug",
+    "observability",
+    "observer-only"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/debug.ts"
+    ]
+  },
+  "files": [
+    "extensions",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run test"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.99.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.99.1",
+    "@types/node": "^22.19.19",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.9"
+  }
+}
