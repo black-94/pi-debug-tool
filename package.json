@@ -1,9 +1,17 @@
 {
-  "name": "pi-debug-tool",
-  "version": "0.1.0",
+  "name": "@black942026/pi-debug-tool",
+  "version": "0.1.1",
   "description": "Observer-only debug extension for Pi 0.99.x: slash commands to inspect state, trace runs, summarize metrics, and debug native MCP without ever touching model context.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/black-94/pi-debug-tool.git"
+  },
+  "homepage": "https://github.com/black-94/pi-debug-tool#readme",
+  "bugs": {
+    "url": "https://github.com/black-94/pi-debug-tool/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -16,11 +24,11 @@
   ],
   "pi": {
     "extensions": [
-      "./extensions/debug.ts"
+      "./index.ts"
     ]
   },
   "files": [
-    "extensions",
+    "index.ts",
     "src",
     "README.md",
     "LICENSE"
@@ -30,7 +38,8 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "check": "npm run typecheck && npm run test"
+    "check": "npm run typecheck && npm run test",
+    "prepublishOnly": "npm run check"
   },
   "engines": {
     "node": ">=22.19.0"

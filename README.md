@@ -42,7 +42,7 @@ This is enforced by tests:
 - `tests/observer-only.test.ts` spies on every forbidden API and fails if any is
   called, asserts all handlers return `undefined`, asserts events are never
   mutated, asserts no `mcp_servers_change` handler is registered, and statically
-  scans `src/**/*.ts` for forbidden call patterns.
+  scans `index.ts` and `src/**/*.ts` for forbidden call patterns.
 - `tests/zero-context-pollution.test.ts` captures the system prompt, system
   prompt options, active tools, session projection, branch, and entries before
   and after running **every** command (including all `/debug mcp` forms) and
@@ -52,14 +52,24 @@ This is enforced by tests:
 
 ## Install
 
+From npm (after publishing):
+
+```bash
+pi install npm:@black942026/pi-debug-tool
+```
+
+The npm package includes the `pi-package` and `pi-extension` keywords for discovery.
+
 Local directory (recommended while developing):
 
 ```bash
 pi install ./pi-debug-tool
 # or load for a single invocation without installing:
-pi --extension ./extensions/debug.ts
+pi --extension ./pi-debug-tool/index.ts
 ```
 
+From the package root, use `pi --extension ./index.ts` (or `pi --extension .`).
+The `pi.extensions` manifest in `package.json` points to `./index.ts`.
 Pi loads the TypeScript entry directly via jiti; no build step is required to use
 the extension.
 
@@ -90,8 +100,19 @@ instead of failing.
 
 ## Architecture
 
+```text
+pi-debug-tool/
+├── package.json           package metadata + pi.extensions: ["./index.ts"]
+├── index.ts               Pi entry (re-exports the factory)
+├── src/                   implementation
+├── tests/                 vitest suite
+├── README.md
+└── LICENSE
 ```
-extensions/debug.ts        Pi entry (re-exports the factory)
+
+Source layout:
+
+```text
 src/
   extension.ts             factory: observers + /debug command
   runtime.ts               all mutable in-memory state

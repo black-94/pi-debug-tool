@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { createDebugExtension } from "../src/extension";
-import piDebugTool from "../extensions/debug";
+import piDebugFactory, { createDebugExtension } from "../src/extension";
+import piDebugTool from "../index";
 import {
 	createFakeClock,
 	createFakeContextEvent,
@@ -69,6 +69,14 @@ function setup(overrides: Parameters<typeof createFakePi>[0] = {}): FakePi {
 }
 
 describe("registration surface", () => {
+	it("declares and publishes the root Pi entry point", () => {
+		const manifest = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8"));
+		expect(manifest.pi.extensions).toEqual(["./index.ts"]);
+		expect(manifest.files).toContain("index.ts");
+		expect(manifest.files).toContain("src");
+		expect(piDebugTool).toBe(piDebugFactory);
+	});
+
 	it("ships the same factory through the Pi entry point", () => {
 		expect(typeof piDebugTool).toBe("function");
 		const fake = createFakePi();
@@ -188,7 +196,7 @@ describe("observer handlers", () => {
 
 describe("static safety scan", () => {
 	it("contains no context-polluting API calls in source", () => {
-		const files = collectTypeScriptFiles(join(process.cwd(), "src"));
+		const files = [join(process.cwd(), "index.ts"), ...collectTypeScriptFiles(join(process.cwd(), "src"))];
 		expect(files.length).toBeGreaterThan(0);
 		const patterns: RegExp[] = [
 			/\.registerTool\s*\(/,
